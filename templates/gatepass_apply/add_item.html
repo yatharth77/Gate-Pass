@@ -1,0 +1,296 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <h3>Add items to your gatepass-</h3>
+    <hr>
+
+
+    <!-- <form action="{%url 'gatepass_apply:add_item' id %}" method="POST">
+  {%csrf_token%}
+  <div class="row">
+    <div class="col">
+      <input type="text" name="detail" class="form-control" placeholder="Detail">
+    </div>
+    <div class="col">
+      <input type="text" name="quantity" class="form-control" placeholder="Quantity">
+    </div>
+    <div class="col">
+      <input type="text" name="remark" class="form-control" placeholder="Remark">
+    </div>
+    <div class="col">
+      <input type="submit" value="Add Item" class="btn btn-primary" style="width: 100px;">
+    </div>
+  </div>
+</form>
+<br><br>
+<a href="{%url 'gatepass_apply:history'%}"><button type="button" class="btn btn-success">Apply for Gatepass</button></a> -->
+
+
+
+
+    <script>
+        var count = 0;
+
+        function arrange() {
+            count++;
+            document.getElementById("count").setAttribute("value", count);
+            var detail = document.getElementsByClassName("first");
+            var quantity = document.getElementsByClassName("second");
+            var remark = document.getElementsByClassName("third");
+            var butt = document.getElementsByClassName("delete");
+            var line = document.getElementsByClassName("newLine");
+
+            for (var i = 0; i < count; i++) {
+                detail[i].setAttribute("id", i);
+                detail[i].setAttribute("name", i);
+
+                quantity[i].setAttribute("id", 100 + i);
+                quantity[i].setAttribute("name", 100 + i);
+
+                remark[i].setAttribute("id", 200 + i);
+                remark[i].setAttribute("name", 200 + i);
+
+                butt[i].setAttribute("id", i + 300);
+                line[i].setAttribute("id", i + 400);
+            }
+        }
+
+
+        function arrange2() {
+            document.getElementById("count").setAttribute("value", count);
+            var detail = document.getElementsByClassName("first");
+            var quantity = document.getElementsByClassName("second");
+            var remark = document.getElementsByClassName("third");
+            var butt = document.getElementsByClassName("delete");
+
+            var row = document.getElementsByClassName("row");
+            var colfirst = document.getElementsByClassName("colfirst");
+            var colsecond = document.getElementsByClassName("colsecond");
+            var colthird = document.getElementsByClassName("colthird");
+            var colfourth = document.getElementsByClassName("colfourth");
+
+
+            for (var i = 0; i < count; i++) {
+                console.log("loop" + i);
+                detail[i].setAttribute("id", i);
+                detail[i].setAttribute("name", i);
+
+                quantity[i].setAttribute("id", 100 + i);
+                quantity[i].setAttribute("name", 100 + i);
+
+                remark[i].setAttribute("id", 200 + i);
+                remark[i].setAttribute("name", 200 + i);
+
+                butt[i].setAttribute("id", i + 300);
+
+                row[i].setAttribute("id", "row" + i);
+                colfirst[i].setAttribute("id", "col" + (i));
+                colsecond[i].setAttribute("id", "col" + (100 + i));
+                colthird[i].setAttribute("id", "col" + (200 + i));
+                colfourth[i].setAttribute("id", "col" + (300 + i));
+            }
+        }
+
+
+        function add_new(buttonId) {
+            var child = document.getElementById(buttonId);
+            var parent = document.getElementById("col" + buttonId);
+            parent.removeChild(child);
+
+            count++;
+
+            var x = document.createElement("INPUT");
+            x.setAttribute("type", "button");
+            x.setAttribute("value", "Delete");
+            x.setAttribute("onclick", "remove_element()");
+            x.setAttribute("class", "delete btn btn-danger");
+            x.setAttribute("style", "width: 100px;");
+            x.setAttribute("id", (300 + count - 1));
+            parent.appendChild(x);
+
+            var row = document.createElement("div");
+            row.setAttribute("class", "row");
+            row.setAttribute("id", "row" + count);
+
+
+            var col = document.createElement("div");
+            col.setAttribute("class", "col colfirst");
+            col.setAttribute("id", "col" + count);
+
+            x = document.createElement("INPUT");
+            x.setAttribute("type", "text");
+            x.setAttribute("placeholder", "Detail");
+            x.setAttribute("name", count);
+            x.setAttribute("id", count);
+            x.setAttribute("class", "first form-control");
+            col.appendChild(x);
+            row.appendChild(col);
+
+            col = document.createElement("div");
+            col.setAttribute("class", "col colsecond");
+            col.setAttribute("id", "col" + (100 + count));
+
+            x = document.createElement("INPUT");
+            x.setAttribute("type", "text");
+            x.setAttribute("placeholder", "Quantity");
+            x.setAttribute("name", (100 + count));
+            x.setAttribute("id", (100 + count));
+            x.setAttribute("class", "second form-control");
+            col.appendChild(x);
+            row.appendChild(col);
+
+
+            col = document.createElement("div");
+            col.setAttribute("class", "col colthird");
+            col.setAttribute("id", "col" + (200 + count));
+
+            x = document.createElement("INPUT");
+            x.setAttribute("type", "text");
+            x.setAttribute("placeholder", "Remark");
+            x.setAttribute("name", (200 + count));
+            x.setAttribute("id", (200 + count));
+            x.setAttribute("class", "third form-control");
+            col.appendChild(x);
+            row.appendChild(col);
+
+
+            col = document.createElement("div");
+            col.setAttribute("class", "col colfourth");
+            col.setAttribute("id", "col" + (300 + count));
+
+            x = document.createElement("INPUT");
+            x.setAttribute("type", "button");
+            x.setAttribute("value", "Add Item");
+            x.setAttribute("id", 300 + count);
+            x.setAttribute("onclick", "add_new(" + (300 + count) + ")");
+            x.setAttribute("class", "btn btn-primary");
+            x.setAttribute("style", "width: 100px;");
+            col.appendChild(x);
+            row.appendChild(col);
+            document.getElementById("con").appendChild(row);
+
+            document.getElementById("count").setAttribute("value", count);
+            arrange2();
+        }
+
+        function remove_element() {
+            // alert(event.srcElement.id);
+            var ids = Number(event.srcElement.id);
+            console.log(ids - 300);
+            var parent = document.getElementById("con");
+            var child = document.getElementById("row" + (ids - 300));
+            parent.removeChild(child);
+
+            count--;
+
+            document.getElementById("count").setAttribute("value", count);
+
+            // var detail=document.getElementsByClassName("first");
+            // var quantity=document.getElementsByClassName("second");
+            // var remark=document.getElementsByClassName("third");
+            // var butt=document.getElementsByClassName("delete");
+
+            // for(var i=0;i<=count;i++){
+            //   detail[i].setAttribute("id",i);
+            //   detail[i].setAttribute("name",i);
+
+            //   quantity[i].setAttribute("id",100+i);
+            //   quantity[i].setAttribute("name",100+i);
+
+            //   remark[i].setAttribute("id",200+i);
+            //   remark[i].setAttribute("name",200+i);
+            //   if(i<count){
+            //     butt[i].setAttribute("id",i+300);
+            //   }
+            // }
+
+            var detail = document.getElementsByClassName("first");
+            var quantity = document.getElementsByClassName("second");
+            var remark = document.getElementsByClassName("third");
+            var butt = document.getElementsByClassName("delete");
+
+            var row = document.getElementsByClassName("row");
+            var colfirst = document.getElementsByClassName("colfirst");
+            var colsecond = document.getElementsByClassName("colsecond");
+            var colthird = document.getElementsByClassName("colthird");
+            var colfourth = document.getElementsByClassName("colfourth");
+
+
+            for (var i = 0; i <= count; i++) {
+                detail[i].setAttribute("id", i);
+                detail[i].setAttribute("name", i);
+
+                quantity[i].setAttribute("id", 100 + i);
+                quantity[i].setAttribute("name", 100 + i);
+
+                remark[i].setAttribute("id", 200 + i);
+                remark[i].setAttribute("name", 200 + i);
+
+                butt[i].setAttribute("id", i + 300);
+
+                row[i].setAttribute("id", "row" + i);
+                colfirst[i].setAttribute("id", "col" + (i));
+                colsecond[i].setAttribute("id", "col" + (100 + i));
+                colthird[i].setAttribute("id", "col" + (200 + i));
+                colfourth[i].setAttribute("id", "col" + (300 + i));
+            }
+        }
+    </script>
+
+
+    <form id="dynamic" method="POST">
+        {% csrf_token %}
+        <input type="hidden" id="count" value="0" name="count">
+        <input type="hidden" name="gatepass_id" value="{{ id }}">
+        <br><br>
+        <div id="con">
+            {% if items %}
+                {% for item in items %}
+                    <div class="row" id="row0">
+                        <div class="col colfirst" id="col0">
+                            <input type="text" name="1000" id="2000" class="first form-control" placeholder="Detail"
+                                   value="{{ item.detail }}">
+                        </div>
+                        <div class="col colsecond" id="col1">
+                            <input type="text" name="1000" id="3000" class="second form-control" placeholder="Quantity"
+                                   value="{{ item.quantity }}">
+                        </div>
+                        <div class="col colthird" id="col2">
+                            <input type="text" name="2000" id="4000" class="third form-control" placeholder="Remark"
+                                   value="{{ item.remark }}">
+                        </div>
+                        <div class="col colfourth" id="col3">
+                            <input type="button" id="300" value="Delete" class="delete btn btn-danger"
+                                   style="width:100px;" onclick="remove_element()">
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        arrange();
+                    </script>
+                {% endfor %}
+            {% endif %}
+
+
+            <div class="row" id="row1000">
+                <div class="col colfirst" id="col2000">
+                    <input type="text" name="1000" id="2000" class="first form-control" placeholder="Detail">
+                </div>
+                <div class="col colsecond" id="col3000">
+                    <input type="text" name="1000" id="3000" class="second form-control" placeholder="Quantity">
+                </div>
+                <div class="col colthird" id="col4000">
+                    <input type="text" name="2000" id="4000" class="third form-control" placeholder="Remark">
+                </div>
+                <div class="col colfourth" id="col5000">
+                    <input type="button" id="5000" value="Add Item" onclick="add_new(this.id)" class="btn btn-primary"
+                           style="width: 100px;">
+                </div>
+            </div>
+
+        </div>
+        <br>
+        <input type="submit" value="Apply for Gatepass" class="btn btn-success">
+        <br><br><br>
+
+    </form>
+{% endblock %}

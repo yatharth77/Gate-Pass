@@ -1,0 +1,68 @@
+{% extends 'manager/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <span class="anchor" id="formRegister"></span>
+            <hr class="mb-5">
+            <!-- form card register -->
+            <div class="card card-outline-secondary">
+                <div class="card-header">
+                    <h3 class="mb-0">Add New user</h3>
+                </div>
+                <div class="card-body">
+                    <form autocomplete="off" class="form" role="form" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="inputName">Username</label>
+                            {% render_field form.username class="form-control" placeholder="Username" %}
+                        </div>
+                        <div class="form-group">
+                            <label for="inputName">First Name</label>
+                            {% render_field extendForm.first_name class="form-control" placeholder="First Name" %}
+                        </div>
+                        <div class="form-group">
+                            <label for="inputName">Last Name</label>
+                            {% render_field extendForm.last_name class="form-control" placeholder="Last Name" %}
+                        </div>
+                        <div class="form-group">
+                            <label for="inputName">Email ID</label>
+                            {% render_field extendForm.email_id class="form-control" placeholder="Email ID" %}
+                        </div>
+                        <div class="form-group">
+                            <label for="inputName">Mobile No</label>
+                            {% render_field extendForm.mob_no class="form-control" placeholder="Mobile Number" %}
+                        </div>
+                        <div class="form-group">
+                            <label for="inputName">Designation</label>
+                            {% render_field extendForm.user_type class="form-control" placeholder="Designation" %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputPassword3">Password</label>
+                            {% render_field form.password1 class="form-control" placeholder="Password" %}
+                            <small class="form-text text-muted" id="passwordHelpBlock">Your password can't be too
+                                similar to your other personal information,must contain at least 8 characters,can't be a
+                                commonly used password,can't be entirely numeric.
+                            </small>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputVerify3">Confirm Password</label>
+                            {% render_field form.password2 class="form-control" placeholder="Confirm Password" %}
+                        </div>
+                        <span style="color: red;">{{ form.errors.password2 }}</span>
+                        {% if messages %}
+                            {% for message in messages %}
+                                <span style="color: red;" class="{{ message.tags }}">{{ message }}</span>
+                            {% endfor %}
+                        {% endif %}
+                        <div class="form-group">
+                            <input type="submit" value="Register" class="btn btn-success btn-lg float-right">
+                        </div>
+                    </form>
+                </div>
+            </div><!-- /form card register -->
+        </div>
+    </div>
+{% endblock %}

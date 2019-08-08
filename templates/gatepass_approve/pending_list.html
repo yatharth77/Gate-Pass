@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Gatepass ID</th>
+                <th scope="col">From Date</th>
+                <th scope="col">To Date</th>
+                <th scope="col">Supervisor</th>
+                <th scope="col">Assistant Warden</th>
+                <th scope="col">Warden</th>
+                <th scope="col">Control Room</th>
+                <th scope="col">View</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for g in pending_passes %}
+                <tr>
+                    <th scope="row">{{ g.id }}</th>
+                    <td>{{ g.from_date }}</td>
+                    <td>{{ g.to_date }}</td>
+                    <td>{{ g.hostel_supervisor }}</td>
+                    <td>{{ g.hostel_assistant_warden }}</td>
+                    <td>{{ g.hostel_warden }}</td>
+                    <td>{{ g.control_room }}</td>
+                    <td>
+                        <a href="{% url 'gatepass_approve:gatepass_detail' g.id %}">
+                            <button type="button" class="btn btn-info">Detail</button>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if pending_passes.has_other_pages %}
+        <ul class="pagination">
+            {% if pending_passes.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ pending_passes.previous_page_number }}">&laquo;</a>
+                </li>
+            {% else %}
+                <li class="page-item"><a class="page-link" href="#"><span>&laquo;</span></a></li>
+            {% endif %}
+            {% for i in pending_passes.paginator.page_range %}
+                {% if pending_passes.number == i %}
+                    <li class="active page-item"><span class="page-link">{{ i }} <span class="sr-only ">(current)</span></span>
+                    </li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if pending_passes.has_next %}
+                <li class="page-item"><a class="page-link"
+                                         href="?page={{ pending_passes.next_page_number }}">&raquo;</a></li>
+            {% else %}
+                <li class="page-item"><a class="page-link" href="#"><span>&raquo;</span></a></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+{% endblock %}

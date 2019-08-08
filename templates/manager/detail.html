@@ -1,0 +1,106 @@
+{% extends 'manager/base.html' %}
+{% load static %}
+{% static "" as baseUrl %}
+{% load widget_tweaks %}
+{% block content %}
+    <br>
+    <div class="card" style="width: 100%; margin-right: auto; margin-left: auto;">
+        <br>
+        <img class="card-img-top" src="/static{{ baseUrl }}/{{ userd.pic }}" alt="Image is Not Available"
+             class="rounded" style="display: block;
+  margin-left: auto; margin-right: auto; width: 30%; border: solid;border-radius: 10px; border-width: 1px;">
+        <div class="card-body">
+            <br>
+            <hr>
+            <div class="table-responsive">
+                <table class="table table-striped ">
+                    <thead>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">Name:</th>
+                        <td>{{ userd.first_name }} {{ userd.last_name }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Mobile No. :</th>
+                        <td>{{ userd.mob_no }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Email ID :</th>
+                        <td>{{ userd.email_id }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Designation:</th>
+                        <td>{{ userd.user_type }}</td>
+                    </tr>
+                    <tr>
+                        <td><a href="{% url 'manager:update_user' userd.user.id %}">
+                            <button type="button" class="btn btn-primary" style="width: 100%"><i
+                                    class="far fa-edit"></i> &nbsp Edit
+                            </button>
+                        </a></td>
+                        <td>
+                            <button type="button" class="btn btn-danger" style="width: 100%" id="btn-confirm"><i
+                                    class="fas fa-trash-alt"></i> &nbsp Delete
+                            </button>
+                            </a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"
+         id="mi-modal">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Are you sure to delete the user?</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="modal-btn-si">Cancel</button>
+                    <a href="{% url 'manager:delete-user' userd.user.id %}">
+                        <button type="button" class="btn btn-danger" id="modal-btn-no">Delete</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert" role="alert" id="result"></div>
+
+    <script type="text/javascript">
+        var modalConfirm = function (callback) {
+
+            $("#btn-confirm").on("click", function () {
+                $("#mi-modal").modal('show');
+            });
+
+            $("#modal-btn-si").on("click", function () {
+                callback(true);
+                $("#mi-modal").modal('hide');
+            });
+
+            $("#modal-btn-no").on("click", function () {
+                callback(false);
+                $("#mi-modal").modal('hide');
+            });
+        };
+
+        modalConfirm(function (confirm) {
+            if (confirm) {
+                //Acciones si el usuario confirma
+                // $("#result").html("CONFIRMADO");
+            } else {
+                //Acciones si el usuario no confirma
+                // $("#result").html("NO CONFIRMADO");
+            }
+        });
+    </script>
+
+{% endblock %}

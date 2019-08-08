@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+{% static "" as baseUrl %}
+{% block content %}
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-lg-3">
+                <div class="card" style="width: 18rem;padding: 3px;">
+                    <div class="image" style="height: 220px;">
+                        <img src="/static{{ baseUrl }}/{{ supervisor.pic }}" class="card-img-top"
+                             alt="Image Not Available" style="height: 100%">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title" style="text-align: center;">Hostel Supervisor</h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <strong>Name: </strong>{{ supervisor.first_name }} {{ supervisor.last_name }}</li>
+                        <li class="list-group-item"><strong>Mob. No: </strong>{{ supervisor.mob_no }}</li>
+                        <li class="list-group-item"><strong>Email ID: </strong>{{ supervisor.email_id }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="card" style="width: 18rem;padding: 3px;">
+                    <div class="image" style="height: 220px;">
+                        <img src="/static{{ baseUrl }}/{{ assistant_warden.pic }}" class="card-img-top"
+                             alt="Image Not Available" style="height: 100%">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title" style="text-align: center;">Assistant Warden</h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <strong>Name: </strong>{{ assistant_warden.first_name }} {{ assistant_warden.last_name }}
+                        </li>
+                        <li class="list-group-item"><strong>Mob. No: </strong>{{ assistant_warden.mob_no }}</li>
+                        <li class="list-group-item"><strong>Email ID: </strong>{{ assistant_warden.email_id }}</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="card" style="width: 18rem;padding: 3px;">
+                    <div class="image" style="height: 220px;">
+                        <img src="/static{{ baseUrl }}/{{ warden.pic }}" class="card-img-top" alt="Image Not Available"
+                             style="height: 100%">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title" style="text-align: center;">Warden</h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <strong>Name: </strong>{{ warden.first_name }} {{ warden.last_name }}</li>
+                        <li class="list-group-item"><strong>Mob. No: </strong>{{ warden.mob_no }}</li>
+                        <li class="list-group-item"><strong>Email ID: </strong>{{ warden.email_id }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="card" style="width: 18rem; padding: 3px;">
+                    <div class="image" style="height: 220px;">
+                        <img src="/static{{ baseUrl }}/{{ control_room.pic }}" class="card-img-top"
+                             alt="Image Not Available" style="height: 100%">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title" style="text-align: center;">Control Room</h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <strong>Name: </strong>{{ control_room.first_name }} {{ control_room.last_name }}</li>
+                        <li class="list-group-item"><strong>Mob. No: </strong>{{ control_room.mob_no }}</li>
+                        <li class="list-group-item"><strong>Email ID: </strong>{{ control_room.email_id }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

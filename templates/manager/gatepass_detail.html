@@ -1,0 +1,120 @@
+{% extends 'manager/base.html' %}
+{% load static %}
+{% static "" as baseUrl %}
+{% block content %}
+    <br>
+    <h4 style="text-align: center;">Gatepass ID :{{ gatepass.id }}</h4>
+
+    <div class="card"
+         style="border-style: solid; border-color: black; border-width: 1px;border-radius: 4px; width: 100%;margin-left: auto; margin-right: auto;">
+        <div id="print-card" style="margin-left: auto; margin-right: auto;">
+            <img src="/static{{ baseUrl }}/{{ gatepass.pic }}" alt="image not found"
+                 style="border-radius: 5%; margin-top: 3%; width:100px; height:100px; border-style: solid; border-color: black; border-width: 1px;"/>
+        </div>
+        <h2 style="font-family: Times New Roman; text-align: center;">{{ gatepass.first_name }} {{ gatepass.last_name }}</h2>
+        <div class="table-responsive">
+            <table class="table table-striped table-responsive">
+                <tbody>
+                <tr>
+                    <th scope="row">Name:</th>
+                    <td>{{ gatepass.first_name }} {{ gatepass.last_name }}</td>
+                    <th scope="row">Roll No:</th>
+                    <td>{{ gatepass.roll_no }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Applied On:</th>
+                    <td>{{ gatepass.applied_on }}</td>
+                    <th scope="row">Mobile No:</th>
+                    <td>{{ gatepass.mob_no }}</td>
+
+                </tr>
+                <tr>
+                    <th scope="row">Room No:</th>
+                    <td>{{ gatepass.room_no }}</td>
+                    <th scope="row">Hostel:</th>
+                    <td>{{ gatepass.hostel }}</td>
+                </tr>
+                <tr>
+
+                    <th scope="row">Father's name:</th>
+                    <td>{{ gatepass.father_name }}</td>
+                    <th scope="row">Father's Mob:</th>
+                    <td>{{ gatepass.father_mobile }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">From Date:</th>
+                    <td>{{ gatepass.from_date }}</td>
+                    <th scope="row">To Date:</th>
+                    <td>{{ gatepass.to_date }}</td>
+                </tr>
+                </tr>
+                <tr>
+                    <th scope="row">Purpose:</th>
+                    <td>{{ gatepass.purpose }}</td>
+                    <th scope="row">Address During Leave:</th>
+                    <td>{{ gatepass.address_during_leave }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Hostel Supervisor Status:</th>
+                    <td>{{ gatepass.hostel_supervisor }}</td>
+                    <th scope="row">Hostel Supervisor Remark:</th>
+                    <td>{{ gatepass.hostel_supervisor_remark }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Assistant Warden:</th>
+                    <td>{{ gatepass.hostel_assistant_warden }}</td>
+                    <th scope="row">Assistant Warden Remark:</th>
+                    <td>{{ gatepass.hostel_assistant_warden_remark }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Warden:</th>
+                    <td>{{ gatepass.hostel_warden }}</td>
+                    <th scope="row">Warden Remark:</th>
+                    <td>{{ gatepass.hostel_warden_remark }}</td>
+                </tr>
+
+                <tr>
+                    <th scope="row">Control Room Status:</th>
+                    <td>{{ gatepass.control_room }}</td>
+                    <th scope="row">Control Room Remark:</th>
+                    <td>{{ gatepass.control_room_remark }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <br>
+
+    <div style="width: 100%; margin-left: auto;margin-right: auto;">
+    <h5 style="width: 100%;">Item in the gatepass-</h5>
+    <hr>
+    <div class="table-responsive">
+        <table class="table table-striped table-responsive">
+            <thead>
+            <tr>
+                <th scope="col">S.No.</th>
+                <th scope="col">Detail</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Remark</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in items %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ item.detail }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.remark }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <br><br>
+    <a href="{% url 'gatepass_approve:print' gatepass.id %}">
+        <button type="button" class="btn btn-primary"><i class="fas fa-print"></i> Print Gatepass</button>
+    </a>
+    <br><br>
+{% endblock %}

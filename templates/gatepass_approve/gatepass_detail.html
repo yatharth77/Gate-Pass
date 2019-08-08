@@ -1,0 +1,648 @@
+{% extends 'base.html' %}
+{% load static %}
+{% static "" as baseUrl %}
+{% block content %}
+    <br>
+    <h4 style="text-align: center;">Gatepass ID :{{ gatepass.id }}</h4>
+
+    <div class="card"
+         style="border-style: solid; border-color: black; border-width: 1px;border-radius: 4px; width: 100%;margin-left: auto; margin-right: auto;">
+        <div id="print-card" style="margin-left: auto; margin-right: auto;">
+            <img src="/static{{ baseUrl }}/{{ gatepass.pic }}" alt="image not found"
+                 style="border-radius: 5%; margin-top: 3%; width:100px; height:100px; border-style: solid; border-color: black; border-width: 1px;"/>
+        </div>
+        <h2 style="font-family: Times New Roman; text-align: center;">{{ gatepass.first_name }} {{ gatepass.last_name }}</h2>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <tbody>
+                <tr>
+                    <th scope="row">Name:</th>
+                    <td>{{ gatepass.first_name }} {{ gatepass.last_name }}</td>
+                    <th scope="row">Roll No:</th>
+                    <td>{{ gatepass.roll_no }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Mobile No:</th>
+                    <td>{{ gatepass.mob_no }}</td>
+                    <th scope="row">Applied On:</th>
+                    <td>{{ gatepass.applied_on }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Room No:</th>
+                    <td>{{ gatepass.room_no }}</td>
+                    <th scope="row">Hostel:</th>
+                    <td>{{ gatepass.hostel }}</td>
+                </tr>
+                <tr>
+
+                    <th scope="row">Father's name:</th>
+                    <td>{{ gatepass.father_name }}</td>
+                    <th scope="row">Father's Mob:</th>
+                    <td>{{ gatepass.father_mobile }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">From Date:</th>
+                    <td>{{ gatepass.from_date }}</td>
+                    <th scope="row">To Date:</th>
+                    <td>{{ gatepass.to_date }}</td>
+                </tr>
+                </tr>
+                <tr>
+                    <th scope="row">Purpose:</th>
+                    <td>{{ gatepass.purpose }}</td>
+                    <th scope="row">Address During Leave:</th>
+                    <td>{{ gatepass.address_during_leave }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Hostel Supervisor Status:</th>
+                    <td>{{ gatepass.hostel_supervisor }}</td>
+                    <th scope="row">Hostel Supervisor Remark:</th>
+                    <td>{{ gatepass.hostel_supervisor_remark }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Assistant Warden:</th>
+                    <td>{{ gatepass.hostel_assistant_warden }}</td>
+                    <th scope="row">Assistant Warden Remark:</th>
+                    <td>{{ gatepass.hostel_assistant_warden_remark }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Warden:</th>
+                    <td>{{ gatepass.hostel_warden }}</td>
+                    <th scope="row">Warden Remark:</th>
+                    <td>{{ gatepass.hostel_warden_remark }}</td>
+                </tr>
+
+                <tr>
+                    <th scope="row">Control Room Status:</th>
+                    <td>{{ gatepass.control_room }}</td>
+                    <th scope="row">Control Room Remark:</th>
+                    <td>{{ gatepass.control_room_remark }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+
+    <div style="width: 100%; margin-left: auto;margin-right: auto;">
+        <h5 style="width: 100%;">Here is list of item you have in your gatepass</h5>
+        <hr>
+        <div class="table-responsive">
+            <table class="table table-striped ">
+                <thead>
+                <tr>
+                    <th scope="col">S.No.</th>
+                    <th scope="col">Detail</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Remark</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in items %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ item.detail }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.remark }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <br><br>
+        <a href="{% url 'gatepass_approve:print' gatepass.id %}">
+            <button type="button" class="btn btn-primary"><i class="fas fa-print"></i> Print Gatepass</button>
+        </a>
+
+        {% ifequal type "Control Room" %}
+            {% ifequal gatepass.control_room "Pending" %}
+                <button id="btn-confirm" type="button" class="btn btn-success"><i class="fas fa-check"></i></i> Approve
+                </button>
+                <button type="button" class="btn btn-danger" class="btn btn-primary" data-toggle="modal"
+                        data-target="#myModal">
+                    <i class="fas fa-times"></i></i> Reject
+                </button>
+                {% else %}
+                <button type="button" class="btn btn-success" disabled=""><i class="fas fa-check"></i></i> Approve
+                </button>
+                <button type="button" class="btn btn-danger" disabled=""><i class="fas fa-times"></i></i> Reject
+                </button>
+            {% endifequal %}
+        {% endifequal %}
+
+
+        {% ifequal type "BH1 Supervisor" %}
+            {% ifequal gatepass.hostel_supervisor "Pending" %}
+                <button id="btn-confirm" type="button" class="btn btn-success"><i class="fas fa-check"></i></i> Approve
+                </button>
+                <button type="button" class="btn btn-danger" class="btn btn-primary" data-toggle="modal"
+                        data-target="#myModal1">
+                    <i class="fas fa-times"></i></i> Reject
+                </button>
+                {% else %}
+                <button type="button" class="btn btn-success" disabled=""><i class="fas fa-check"></i></i> Approve
+                </button>
+                <button type="button" class="btn btn-danger" disabled=""><i class="fas fa-times"></i></i> Reject
+                </button>
+            {% endifequal %}
+        {% endifequal %}
+
+        {% ifequal type "BH1 Warden" %}
+            {% ifequal gatepass.hostel_warden "Pending" %}
+                <button id="btn-confirm" type="button" class="btn btn-success"><i class="fas fa-check"></i></i> Approve
+                </button>
+                <button type="button" class="btn btn-danger" class="btn btn-primary" data-toggle="modal"
+                        data-target="#myModal1">
+                    <i class="fas fa-times"></i></i> Reject
+                </button>
+                {% else %}
+                <button type="button" class="btn btn-success" disabled=""><i class="fas fa-check"></i></i> Approve
+                </button>
+                <button type="button" class="btn btn-danger" disabled=""><i class="fas fa-times"></i></i> Reject
+                </button>
+            {% endifequal %}
+        {% endifequal %}
+
+        {% ifequal type "BH1 Assistant Warden" %}
+            {% ifequal gatepass.hostel_assistant_warden "Pending" %}
+                <button id="btn-confirm" type="button" class="btn btn-success"><i class="fas fa-check"></i></i> Approve
+                </button>
+                <button type="button" class="btn btn-danger" class="btn btn-primary" data-toggle="modal"
+                        data-target="#myModal1">
+                    <i class="fas fa-times"></i></i> Reject
+                </button>
+                {% else %}
+                <button type="button" class="btn btn-success" disabled=""><i class="fas fa-check"></i></i> Approve
+                </button>
+                <button type="button" class="btn btn-danger" disabled=""><i class="fas fa-times"></i></i> Reject
+                </button>
+            {% endifequal %}
+        {% endifequal %}
+
+        {% ifequal type "BH2 Supervisor" %}
+            {% ifequal gatepass.hostel_supervisor "Pending" %}
+                <button id="btn-confirm" type="button" class="btn btn-success"><i class="fas fa-check"></i></i> Approve
+                </button>
+                <button type="button" class="btn btn-danger" class="btn btn-primary" data-toggle="modal"
+                        data-target="#myModal1">
+                    <i class="fas fa-times"></i></i> Reject
+                </button>
+                {% else %}
+                <button type="button" class="btn btn-success" disabled=""><i class="fas fa-check"></i></i> Approve
+                </button>
+                <button type="button" class="btn btn-danger" disabled=""><i class="fas fa-times"></i></i> Reject
+                </button>
+            {% endifequal %}
+        {% endifequal %}
+
+        {% ifequal type "BH2 Warden" %}
+            {% ifequal gatepass.hostel_warden "Pending" %}
+                <button id="btn-confirm" type="button" class="btn btn-success"><i class="fas fa-check"></i></i> Approve
+                </button>
+                <button type="button" class="btn btn-danger" class="btn btn-primary" data-toggle="modal"
+                        data-target="#myModal1">
+                    <i class="fas fa-times"></i></i> Reject
+                </button>
+                {% else %}
+                <button type="button" class="btn btn-success" disabled=""><i class="fas fa-check"></i></i> Approve
+                </button>
+                <button type="button" class="btn btn-danger" disabled=""><i class="fas fa-times"></i></i> Reject
+                </button>
+            {% endifequal %}
+        {% endifequal %}
+
+        {% ifequal type "BH2 Assistant Warden" %}
+            {% ifequal gatepass.hostel_assistant_warden "Pending" %}
+                <button id="btn-confirm" type="button" class="btn btn-success"><i class="fas fa-check"></i></i> Approve
+                </button>
+                <button type="button" class="btn btn-danger" class="btn btn-primary" data-toggle="modal"
+                        data-target="#myModal1">
+                    <i class="fas fa-times"></i></i> Reject
+                </button>
+                {% else %}
+                <button type="button" class="btn btn-success" disabled=""><i class="fas fa-check"></i></i> Approve
+                </button>
+                <button type="button" class="btn btn-danger" disabled=""><i class="fas fa-times"></i></i> Reject
+                </button>
+            {% endifequal %}
+        {% endifequal %}
+
+        {% ifequal type "BH3 Supervisor" %}
+            {% ifequal gatepass.hostel_supervisor "Pending" %}
+                <button id="btn-confirm" type="button" class="btn btn-success"><i class="fas fa-check"></i></i> Approve
+                </button>
+                <button type="button" class="btn btn-danger" class="btn btn-primary" data-toggle="modal"
+                        data-target="#myModal1">
+                    <i class="fas fa-times"></i></i> Reject
+                </button>
+                {% else %}
+                <button type="button" class="btn btn-success" disabled=""><i class="fas fa-check"></i></i> Approve
+                </button>
+                <button type="button" class="btn btn-danger" disabled=""><i class="fas fa-times"></i></i> Reject
+                </button>
+            {% endifequal %}
+        {% endifequal %}
+
+        {% ifequal type "BH3 Warden" %}
+            {% ifequal gatepass.hostel_warden "Pending" %}
+                <button id="btn-confirm" type="button" class="btn btn-success"><i class="fas fa-check"></i></i> Approve
+                </button>
+                <button type="button" class="btn btn-danger" class="btn btn-primary" data-toggle="modal"
+                        data-target="#myModal1">
+                    <i class="fas fa-times"></i></i> Reject
+                </button>
+                {% else %}
+                <button type="button" class="btn btn-success" disabled=""><i class="fas fa-check"></i></i> Approve
+                </button>
+                <button type="button" class="btn btn-danger" disabled=""><i class="fas fa-times"></i></i> Reject
+                </button>
+            {% endifequal %}
+        {% endifequal %}
+
+        {% ifequal type "BH3 Assistant Warden" %}
+            {% ifequal gatepass.hostel_assistant_warden "Pending" %}
+                <button id="btn-confirm" type="button" class="btn btn-success"><i class="fas fa-check"></i></i> Approve
+                </button>
+                <button type="button" class="btn btn-danger" class="btn btn-primary" data-toggle="modal"
+                        data-target="#myModal1">
+                    <i class="fas fa-times"></i></i> Reject
+                </button>
+                {% else %}
+                <button type="button" class="btn btn-success" disabled=""><i class="fas fa-check"></i></i> Approve
+                </button>
+                <button type="button" class="btn btn-danger" disabled=""><i class="fas fa-times"></i></i> Reject
+                </button>
+            {% endifequal %}
+        {% endifequal %}
+
+        {% ifequal type "GH Supervisor" %}
+            {% ifequal gatepass.hostel_supervisor "Pending" %}
+                <button id="btn-confirm" type="button" class="btn btn-success"><i class="fas fa-check"></i></i> Approve
+                </button>
+                <button type="button" class="btn btn-danger" class="btn btn-primary" data-toggle="modal"
+                        data-target="#myModal1">
+                    <i class="fas fa-times"></i></i> Reject
+                </button>
+                {% else %}
+                <button type="button" class="btn btn-success" disabled=""><i class="fas fa-check"></i></i> Approve
+                </button>
+                <button type="button" class="btn btn-danger" disabled=""><i class="fas fa-times"></i></i> Reject
+                </button>
+            {% endifequal %}
+        {% endifequal %}
+
+        {% ifequal type "GH Warden" %}
+            {% ifequal gatepass.hostel_warden "Pending" %}
+                <button id="btn-confirm" type="button" class="btn btn-success"><i class="fas fa-check"></i></i> Approve
+                </button>
+                <button type="button" class="btn btn-danger" class="btn btn-primary" data-toggle="modal"
+                        data-target="#myModal1">
+                    <i class="fas fa-times"></i></i> Reject
+                </button>
+                {% else %}
+                <button type="button" class="btn btn-success" disabled=""><i class="fas fa-check"></i></i> Approve
+                </button>
+                <button type="button" class="btn btn-danger" disabled=""><i class="fas fa-times"></i></i> Reject
+                </button>
+            {% endifequal %}
+        {% endifequal %}
+
+        {% ifequal type "GH Assistant Warden" %}
+            {% ifequal gatepass.hostel_assistant_warden "Pending" %}
+                <button id="btn-confirm" type="button" class="btn btn-success"><i class="fas fa-check"></i></i> Approve
+                </button>
+                <button type="button" class="btn btn-danger" class="btn btn-primary" data-toggle="modal"
+                        data-target="#myModal1">
+                    <i class="fas fa-times"></i></i> Reject
+                </button>
+                {% else %}
+                <button type="button" class="btn btn-success" disabled=""><i class="fas fa-check"></i></i> Approve
+                </button>
+                <button type="button" class="btn btn-danger" disabled=""><i class="fas fa-times"></i></i> Reject
+                </button>
+            {% endifequal %}
+        {% endifequal %}
+        <br><br>
+
+
+        <!-- The Modal -->
+        <div class="modal fade" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add Remark for Rejection</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <form action="{% url 'gatepass_approve:reject_gatepass_control_room' gatepass.id %}"
+                              method="POST">
+                            {% csrf_token %}
+                            <textarea name="remark" cols="40" rows="5"></textarea><br>
+                            <input type="submit" class="btn btn-success" value="Add Remark">
+                        </form>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <!-- The Modal -->
+    <div class="modal fade" id="myModal1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Remark for Rejection</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    {% ifequal type "BH1 Supervisor" %}
+                        <form action="{% url 'gatepass_approve:reject_gatepass_hostel_supervisor' gatepass.id %}"
+                              method="POST">
+                            {% csrf_token %}
+                            <textarea name="remark" cols="40" rows="5"></textarea><br>
+                            <input type="submit" class="btn btn-success" value="Add Remark">
+                        </form>
+                    {% endifequal %}
+
+                    {% ifequal type "BH1 Warden" %}
+                        <form action="{% url 'gatepass_approve:reject_gatepass_hostel_warden' gatepass.id %}"
+                              method="POST">
+                            {% csrf_token %}
+                            <textarea name="remark" cols="40" rows="5"></textarea><br>
+                            <input type="submit" class="btn btn-success" value="Add Remark">
+                        </form>
+                    {% endifequal %}
+
+                    {% ifequal type "BH1 Assistant Warden" %}
+                        <form action="{% url 'gatepass_approve:reject_gatepass_hostel_assistant_warden' gatepass.id %}"
+                              method="POST">
+                            {% csrf_token %}
+                            <textarea name="remark" cols="40" rows="5"></textarea><br>
+                            <input type="submit" class="btn btn-success" value="Add Remark">
+                        </form>
+                    {% endifequal %}
+
+                    {% ifequal type "BH2 Supervisor" %}
+                        <form action="{% url 'gatepass_approve:reject_gatepass_hostel_supervisor' gatepass.id %}"
+                              method="POST">
+                            {% csrf_token %}
+                            <textarea name="remark" cols="40" rows="5"></textarea><br>
+                            <input type="submit" class="btn btn-success" value="Add Remark">
+                        </form>
+                    {% endifequal %}
+
+                    {% ifequal type "BH2 Warden" %}
+                        <form action="{% url 'gatepass_approve:reject_gatepass_hostel_warden' gatepass.id %}"
+                              method="POST">
+                            {% csrf_token %}
+                            <textarea name="remark" cols="40" rows="5"></textarea><br>
+                            <input type="submit" class="btn btn-success" value="Add Remark">
+                        </form>
+                    {% endifequal %}
+
+                    {% ifequal type "BH2 Assistant Warden" %}
+                        <form action="{% url 'gatepass_approve:reject_gatepass_hostel_assistant_warden' gatepass.id %}"
+                              method="POST">
+                            {% csrf_token %}
+                            <textarea name="remark" cols="40" rows="5"></textarea><br>
+                            <input type="submit" class="btn btn-success" value="Add Remark">
+                        </form>
+                    {% endifequal %}
+
+
+
+                    {% ifequal type "BH3 Supervisor" %}
+                        <form action="{% url 'gatepass_approve:reject_gatepass_hostel_supervisor' gatepass.id %}"
+                              method="POST">
+                            {% csrf_token %}
+                            <textarea name="remark" cols="40" rows="5"></textarea><br>
+                            <input type="submit" class="btn btn-success" value="Add Remark">
+                        </form>
+                    {% endifequal %}
+
+                    {% ifequal type "BH3 Warden" %}
+                        <form action="{% url 'gatepass_approve:reject_gatepass_hostel_warden' gatepass.id %}"
+                              method="POST">
+                            {% csrf_token %}
+                            <textarea name="remark" cols="40" rows="5"></textarea><br>
+                            <input type="submit" class="btn btn-success" value="Add Remark">
+                        </form>
+                    {% endifequal %}
+
+                    {% ifequal type "BH3 Assistant Warden" %}
+                        <form action="{% url 'gatepass_approve:reject_gatepass_hostel_assistant_warden' gatepass.id %}"
+                              method="POST">
+                            {% csrf_token %}
+                            <textarea name="remark" cols="40" rows="5"></textarea><br>
+                            <input type="submit" class="btn btn-success" value="Add Remark">
+                        </form>
+                    {% endifequal %}
+
+                    {% ifequal type "GH Supervisor" %}
+                        <form action="{% url 'gatepass_approve:reject_gatepass_hostel_supervisor' gatepass.id %}"
+                              method="POST">
+                            {% csrf_token %}
+                            <textarea name="remark" cols="40" rows="5"></textarea><br>
+                            <input type="submit" class="btn btn-success" value="Add Remark">
+                        </form>
+                    {% endifequal %}
+
+                    {% ifequal type "GH Warden" %}
+                        <form action="{% url 'gatepass_approve:reject_gatepass_hostel_warden' gatepass.id %}"
+                              method="POST">
+                            {% csrf_token %}
+                            <textarea name="remark" cols="40" rows="5"></textarea><br>
+                            <input type="submit" class="btn btn-success" value="Add Remark">
+                        </form>
+                    {% endifequal %}
+
+                    {% ifequal type "GH Assistant Warden" %}
+                        <form action="{% url 'gatepass_approve:reject_gatepass_hostel_assistant_warden' gatepass.id %}"
+                              method="POST">
+                            {% csrf_token %}
+                            <textarea name="remark" cols="40" rows="5"></textarea><br>
+                            <input type="submit" class="btn btn-success" value="Add Remark">
+                        </form>
+                    {% endifequal %}
+
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"
+         id="mi-modal">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="myModalLabel">Are you sure to approve the gatepass?</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-footer">
+                    {% ifequal type "Control Room" %}
+                        {% ifequal gatepass.control_room "Pending" %}
+                            <a href="{% url 'gatepass_approve:approve_gatepass_control_room' gatepass.id %}">
+                                <button type="button" class="btn btn-primary" id="modal-btn-si">Approve</button>
+                            </a>
+                        {% endifequal %}
+                    {% endifequal %}
+
+                    {% ifequal type "BH1 Supervisor" %}
+                        {% ifequal gatepass.hostel_supervisor "Pending" %}
+                            <a href="{% url 'gatepass_approve:approve_gatepass_hostel_supervisor' gatepass.id %}">
+                                <button type="button" class="btn btn-primary" id="modal-btn-si">Approve</button>
+                            </a>
+                        {% endifequal %}
+                    {% endifequal %}
+
+                    {% ifequal type "BH1 Warden" %}
+                        {% ifequal gatepass.hostel_warden "Pending" %}
+                            <a href="{% url 'gatepass_approve:approve_gatepass_hostel_warden' gatepass.id %}">
+                                <button type="button" class="btn btn-primary" id="modal-btn-si">Approve</button>
+                            </a>
+                        {% endifequal %}
+                    {% endifequal %}
+
+                    {% ifequal type "BH1 Assistant Warden" %}
+                        {% ifequal gatepass.hostel_assistant_warden "Pending" %}
+                            <a href="{% url 'gatepass_approve:approve_gatepass_hostel_assistant_warden' gatepass.id %}">
+                                <button type="button" class="btn btn-primary" id="modal-btn-si">Approve</button>
+                            </a>
+                        {% endifequal %}
+                    {% endifequal %}
+
+                    {% ifequal type "BH2 Supervisor" %}
+                        {% ifequal gatepass.hostel_supervisor "Pending" %}
+                            <a href="{% url 'gatepass_approve:approve_gatepass_hostel_supervisor' gatepass.id %}">
+                                <button type="button" class="btn btn-primary" id="modal-btn-si">Approve</button>
+                            </a>
+                        {% endifequal %}
+                    {% endifequal %}
+
+                    {% ifequal type "BH2 Warden" %}
+                        {% ifequal gatepass.hostel_warden "Pending" %}
+                            <a href="{% url 'gatepass_approve:approve_gatepass_hostel_warden' gatepass.id %}">
+                                <button type="button" class="btn btn-primary" id="modal-btn-si">Approve</button>
+                            </a>
+                        {% endifequal %}
+                    {% endifequal %}
+
+                    {% ifequal type "BH2 Assistant Warden" %}
+                        {% ifequal gatepass.hostel_assistant_warden "Pending" %}
+                            <a href="{% url 'gatepass_approve:approve_gatepass_hostel_assistant_warden' gatepass.id %}">
+                                <button type="button" class="btn btn-primary" id="modal-btn-si">Approve</button>
+                            </a>
+                        {% endifequal %}
+                    {% endifequal %}
+
+                    {% ifequal type "BH3 Supervisor" %}
+                        {% ifequal gatepass.hostel_supervisor "Pending" %}
+                            <a href="{% url 'gatepass_approve:approve_gatepass_hostel_supervisor' gatepass.id %}">
+                                <button type="button" class="btn btn-primary" id="modal-btn-si">Approve</button>
+                            </a>
+                        {% endifequal %}
+                    {% endifequal %}
+
+                    {% ifequal type "BH3 Warden" %}
+                        {% ifequal gatepass.hostel_warden "Pending" %}
+                            <a href="{% url 'gatepass_approve:approve_gatepass_hostel_warden' gatepass.id %}">
+                                <button type="button" class="btn btn-primary" id="modal-btn-si">Approve</button>
+                            </a>
+                        {% endifequal %}
+                    {% endifequal %}
+
+                    {% ifequal type "BH3 Assistant Warden" %}
+                        {% ifequal gatepass.hostel_assistant_warden "Pending" %}
+                            <a href="{% url 'gatepass_approve:approve_gatepass_hostel_assistant_warden' gatepass.id %}">
+                                <button type="button" class="btn btn-primary" id="modal-btn-si">Approve</button>
+                            </a>
+                        {% endifequal %}
+                    {% endifequal %}
+
+                    {% ifequal type "GH Supervisor" %}
+                        {% ifequal gatepass.hostel_supervisor "Pending" %}
+                            <a href="{% url 'gatepass_approve:approve_gatepass_hostel_supervisor' gatepass.id %}">
+                                <button type="button" class="btn btn-primary" id="modal-btn-si">Approve</button>
+                            </a>
+                        {% endifequal %}
+                    {% endifequal %}
+
+                    {% ifequal type "GH Warden" %}
+                        {% ifequal gatepass.hostel_warden "Pending" %}
+                            <a href="{% url 'gatepass_approve:approve_gatepass_hostel_warden' gatepass.id %}">
+                                <button type="button" class="btn btn-primary" id="modal-btn-si">Approve</button>
+                            </a>
+                        {% endifequal %}
+                    {% endifequal %}
+
+                    {% ifequal type "GH Assistant Warden" %}
+                        {% ifequal gatepass.hostel_assistant_warden "Pending" %}
+                            <a href="{% url 'gatepass_approve:approve_gatepass_hostel_assistant_warden' gatepass.id %}">
+                                <button type="button" class="btn btn-primary" id="modal-btn-si">Approve</button>
+                            </a>
+                        {% endifequal %}
+                    {% endifequal %}
+
+                    <button type="button" class="btn btn-danger" id="modal-btn-no">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert" role="alert" id="result"></div>
+
+    <script>
+        var modalConfirm = function (callback) {
+
+            $("#btn-confirm").on("click", function () {
+                $("#mi-modal").modal('show');
+            });
+
+            $("#modal-btn-si").on("click", function () {
+                callback(true);
+                $("#mi-modal").modal('hide');
+            });
+
+            $("#modal-btn-no").on("click", function () {
+                callback(false);
+                $("#mi-modal").modal('hide');
+            });
+        };
+
+        modalConfirm(function (confirm) {
+            if (confirm) {
+                //Acciones si el usuario confirma
+                $("#result").html("");
+            } else {
+                //Acciones si el usuario no confirma
+                $("#result").html("");
+            }
+        });
+    </script>
+
+{% endblock %}
